@@ -16,38 +16,28 @@ final class EmployeeValidator {
 	 * 検証します。
 	 * @param employee
 	 */
-	public static void validate(Employee employee) {
+	public static ExecutionResult validate(Employee employee) {
 		// 社員番号
 		if (isEmpty(employee.getNo())) {
-			raiseError("no");
+			return ExecutionResult.INVALID_NO;
 		}
 
 		// 氏名
 		if (isEmpty(employee.getName())) {
-			raiseError("name");
+			return ExecutionResult.INVALID_NAME;
 		}
-		//
-//		@CsvColumn(position = 0)
-//		private String no;
-//
-//		@CsvColumn(position = 1)
-//		private String name;
-//
-//		/** ふりがな */
-//		@CsvColumn(position = 2)
-//		private String kana;
-//
-//		/** ID */
-//		@CsvColumn(position = 3)
-//		private String id;
-//
-//		/** 所属 */
-//		@CsvColumn(position = 4)
-//		private String belong;
-//
-//		/** メールアドレス */
-//		@CsvColumn(position = 5)
-//		private String email;
+
+		// ふりがな
+		if (isEmpty(employee.getKana())) {
+			return ExecutionResult.INVALID_KANA;
+		}
+
+		// ID
+		if (isEmpty(employee.getId())) {
+			return ExecutionResult.INVALID_ID;
+		}
+
+		return ExecutionResult.SUCCESS;
 	}
 
 	/**
@@ -57,13 +47,5 @@ final class EmployeeValidator {
 	 */
 	private static boolean isEmpty(String value) {
 		return value == null || value.isEmpty();
-	}
-
-	/**
-	 * エラー例外をスローします。
-	 * @param name
-	 */
-	private static void raiseError(String name) {
-		throw new IllegalArgumentException(name);
 	}
 }

@@ -12,16 +12,22 @@ import com.egu.sample.database.entity.Employee;
 public interface EmployeeStore {
 
 	/**
-	 * 登録します。
+	 * 新規作成を行います。
 	 * @param employee
 	 */
-	void register(Employee employee);
+	ExecutionResult create(Employee employee);
+
+	/**
+	 * 更新を行います。
+	 * @param employee
+	 */
+	ExecutionResult update(Employee employee);
 
 	/**
 	 * 削除します。
 	 * @param employee
 	 */
-	void delete(Employee employee);
+	ExecutionResult delete(Employee employee);
 
 	/**
 	 * 一覧を取得します。
