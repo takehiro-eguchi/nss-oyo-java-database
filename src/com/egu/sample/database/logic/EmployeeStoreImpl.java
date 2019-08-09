@@ -33,15 +33,48 @@ class EmployeeStoreImpl implements EmployeeStore {
 	}
 
 	@Override
-	public void register(Employee employee) {
-		// TODO 自動生成されたメソッド・スタブ
+	public ExecutionResult create(Employee employee) {
+		// 検証
+		ExecutionResult result = EmployeeValidator.validate(employee);
+		if (!result.isSuccess()) {
+			return result;
+		}
 
+		// 追加
+		try {
+			this.accessor.insert(employee);
+			return ExecutionResult.SUCCESS;
+		} catch (IllegalArgumentException e) {
+			return ExecutionResult.ALREADY_EXISTS;
+		}
 	}
 
 	@Override
-	public void delete(Employee employee) {
-		// TODO 自動生成されたメソッド・スタブ
+	public ExecutionResult update(Employee employee) {
+		// 検証
+		ExecutionResult result = EmployeeValidator.validate(employee);
+		if (!result.isSuccess()) {
+			return result;
+		}
 
+		// 更新
+		try {
+			this.accessor.update(employee);
+			return ExecutionResult.SUCCESS;
+		} catch (IllegalArgumentException e) {
+			return ExecutionResult.NOT_FOUND;
+		}
+	}
+
+	@Override
+	public ExecutionResult delete(Employee employee) {
+		// 削除
+		try {
+			this.accessor.delete(employee);
+			return ExecutionResult.SUCCESS;
+		} catch (IllegalArgumentException e) {
+			return ExecutionResult.NOT_FOUND;
+		}
 	}
 
 	@Override

@@ -14,4 +14,12 @@ public enum ExecutionResult {
 	ALREADY_EXISTS,
 	NOT_FOUND,
 	;
+
+	/**
+	 * 成功かどうかを判定します。
+	 * @return
+	 */
+	public boolean isSuccess() {
+		return this == SUCCESS;
+	}
 }
