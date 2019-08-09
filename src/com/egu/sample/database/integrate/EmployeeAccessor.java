@@ -24,6 +24,12 @@ public interface EmployeeAccessor {
 	void delete(Employee employee);
 
 	/**
+	 * 社員を更新します。
+	 * @param employee
+	 */
+	void update(Employee employee);
+
+	/**
 	 * 全社員を取得します。
 	 */
 	List<Employee> all();
