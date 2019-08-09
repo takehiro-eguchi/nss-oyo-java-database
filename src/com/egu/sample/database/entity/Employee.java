@@ -31,4 +31,17 @@ public class Employee {
 
 	/** メールアドレス */
 	private String email;
+
+	/**
+	 * コピーコンストラクタです。
+	 * @param src
+	 */
+	public Employee(Employee src) {
+		this.no = src.no;
+		this.name = src.name;
+		this.kana = src.kana;
+		this.id = src.id;
+		this.belong = src.belong;
+		this.email = src.email;
+	}
 }
