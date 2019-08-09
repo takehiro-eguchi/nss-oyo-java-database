@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/lombok.jar" sourcepath="C:/Users/t-eguchi/AppData/Local/Temp/.org.sf.feeling.decompiler1565317075203/source/lombok-1.18.8-sources.jar"/>
 	<classpathentry kind="lib" path="lib/orangesignal-csv-2.0.0.jar" sourcepath="C:/Users/t-eguchi/AppData/Local/Temp/.org.sf.feeling.decompiler1565317075203/source/orangesignal-csv-2.0.0-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
