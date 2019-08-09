@@ -18,22 +18,22 @@ final class EmployeeValidator {
 	 */
 	public static ExecutionResult validate(Employee employee) {
 		// 社員番号
-		if (isEmpty(employee.getNo())) {
+		if (isEmpty(employee.no())) {
 			return ExecutionResult.INVALID_NO;
 		}
 
 		// 氏名
-		if (isEmpty(employee.getName())) {
+		if (isEmpty(employee.name())) {
 			return ExecutionResult.INVALID_NAME;
 		}
 
 		// ふりがな
-		if (isEmpty(employee.getKana())) {
+		if (isEmpty(employee.kana())) {
 			return ExecutionResult.INVALID_KANA;
 		}
 
 		// ID
-		if (isEmpty(employee.getId())) {
+		if (isEmpty(employee.id())) {
 			return ExecutionResult.INVALID_ID;
 		}
 
