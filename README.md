@@ -21,6 +21,7 @@
     * https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 * Scene Builder(直接の利用はなし)
     * https://gluonhq.com/products/scene-builder/
+    * 文字化けするので、** \\seiryu\shinjin-kenshu41\20.Java言語\データベース課題\SceneBuilder.cfg ** をインストールディレクトリの ** app ** に配置すること。
 
 ## TODO
 * チェックボックスの実装
