@@ -10,7 +10,7 @@
     * トランザクションも適切に設定すること。
 * データベースに関するライブラリを利用した方式
     * 同上
-* 便利サイトよりcsvファイルを取得して、データベースへと投入するバッチも作成してください。
+* 便利サイトよりcsvファイルを取得して、データベースへと投入するバッチも作成すること。
 
 ## 必要なプラグイン
 * Lombok
@@ -19,6 +19,7 @@
 ## 利用するミドルウェア
 * PostgreSQL
     * https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+    * 本番運用ではないので、スーパーユーザのパスワードは ** password ** でよい。
 * Scene Builder(直接の利用はなし)
     * https://gluonhq.com/products/scene-builder/
     * 文字化けするので、** \\seiryu\shinjin-kenshu41\20.Java言語\データベース課題\SceneBuilder.cfg ** をインストールディレクトリの ** app ** に配置すること。
