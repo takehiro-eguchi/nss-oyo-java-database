@@ -187,20 +187,4 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	private static boolean contains(String target, String pattern) {
 		return target != null && target.contains(pattern);
 	}
-
-	public static void main(String[] args) {
-		EmployeeCsvAccessor accessor = new EmployeeCsvAccessor();
-//		List<Employee> employees = accessor.all();
-		List<Employee> employees = accessor.select("");
-		employees.forEach(employee -> System.out.println(employee));
-
-//		Employee yamaguchi = new Employee();
-//		yamaguchi.setNo("81");
-//		accessor.delete(yamaguchi);
-
-//		Employee newMan = new Employee();
-//		newMan.setNo("20000");
-//		newMan.setName("New Man");
-//		accessor.insert(newMan);
-	}
 }

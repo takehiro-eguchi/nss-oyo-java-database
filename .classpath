@@ -7,5 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/lombok.jar"/>
 	<classpathentry kind="lib" path="lib/orangesignal-csv-2.0.0.jar" sourcepath="C:/Users/t-eguchi/AppData/Local/Temp/.org.sf.feeling.decompiler1565317075203/source/orangesignal-csv-2.0.0-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
