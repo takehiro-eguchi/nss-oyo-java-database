@@ -53,9 +53,7 @@ public class EmployeeAccessorTest {
 	@Test
 	@DisplayName("insert(正常系)")
 	void testInsertLegal() {
-		Employee employee = new Employee();
-		employee.setNo("4300");
-		employee.setName("New Comer");
+		Employee employee = new Employee().no("4300").name("New Comer");
 		this.target.insert(employee);
 		List<Employee> actual = this.target.all();
 		assertEquals(14, actual.size());
@@ -64,9 +62,7 @@ public class EmployeeAccessorTest {
 	@Test
 	@DisplayName("insert(異常系)")
 	void testInsertIllegal() {
-		Employee employee = new Employee();
-		employee.setNo("4284");
-		employee.setName("New Comer");
+		Employee employee = new Employee().no("4284").name("New Comer");
 		assertThrows(
 				IllegalArgumentException.class, () -> this.target.insert(employee));
 	}
@@ -74,9 +70,7 @@ public class EmployeeAccessorTest {
 	@Test
 	@DisplayName("delete(正常系)")
 	void testDeleteLegal() {
-		Employee employee = new Employee();
-		employee.setNo("4284");
-		employee.setName("so.okayasu");
+		Employee employee = new Employee().no("4284").name("so.okayasu");
 		this.target.delete(employee);
 		List<Employee> actual = this.target.all();
 		assertEquals(12, actual.size());
@@ -85,9 +79,7 @@ public class EmployeeAccessorTest {
 	@Test
 	@DisplayName("delete(異常系)")
 	void testDeleteIllegal() {
-		Employee employee = new Employee();
-		employee.setNo("5000");
-		employee.setName("unknown");
+		Employee employee = new Employee().no("5000").name("unknown");
 		assertThrows(
 				IllegalArgumentException.class, () -> this.target.delete(employee));
 	}

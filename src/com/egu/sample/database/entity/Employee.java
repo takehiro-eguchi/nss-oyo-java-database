@@ -5,6 +5,7 @@ import com.orangesignal.csv.annotation.CsvEntity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 社員を表すエンティティです。
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Accessors(fluent=true)
 @CsvEntity(header = true)
 public class Employee {
 

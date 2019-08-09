@@ -133,13 +133,13 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		}
 
 		// 検索
-		Predicate<Employee> predicate = emp -> contains(emp.getNo(), text);
+		Predicate<Employee> predicate = emp -> contains(emp.no(), text);
 		predicate = predicate
-				.or(emp -> contains(emp.getName(), text))
-				.or(emp -> contains(emp.getKana(), text))
-				.or(emp -> contains(emp.getId(), text))
-				.or(emp -> contains(emp.getBelong(), text))
-				.or(emp -> contains(emp.getEmail(), text));
+				.or(emp -> contains(emp.name(), text))
+				.or(emp -> contains(emp.kana(), text))
+				.or(emp -> contains(emp.id(), text))
+				.or(emp -> contains(emp.belong(), text))
+				.or(emp -> contains(emp.email(), text));
 		List<Employee> result = allEmployees.stream()
 				.filter(predicate)
 				.collect(Collectors.toList());
@@ -153,7 +153,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	 */
 	private Optional<Employee> findByNo(Employee target) {
 		Optional<Employee> ret = this.employees.stream()
-				.filter(emp -> emp.getNo().equals(target.getNo()))
+				.filter(emp -> emp.no().equals(target.no()))
 				.findFirst();
 		return ret;
 	}
