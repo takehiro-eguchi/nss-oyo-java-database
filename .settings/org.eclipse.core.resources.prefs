@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
 encoding//resources/employee-list.csv=MS932
+encoding//test/com/egu/sample/database/integrate/employee-list.csv=MS932
