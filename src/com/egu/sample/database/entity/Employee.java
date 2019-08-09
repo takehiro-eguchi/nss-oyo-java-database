@@ -1,6 +1,8 @@
 package com.egu.sample.database.entity;
 
-import lombok.AllArgsConstructor;
+import com.orangesignal.csv.annotation.CsvColumn;
+import com.orangesignal.csv.annotation.CsvEntity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,25 +13,31 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@CsvEntity(header = true)
 public class Employee {
 
 	/** 社員番号 */
+	@CsvColumn(position = 0)
 	private String no;
 
 	/** 氏名 */
+	@CsvColumn(position = 1)
 	private String name;
 
 	/** ふりがな */
+	@CsvColumn(position = 2)
 	private String kana;
 
 	/** ID */
+	@CsvColumn(position = 3)
 	private String id;
 
 	/** 所属 */
+	@CsvColumn(position = 4)
 	private String belong;
 
 	/** メールアドレス */
+	@CsvColumn(position = 5)
 	private String email;
 
 	/**
