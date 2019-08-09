@@ -21,3 +21,10 @@
     * https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 * Scene Builder(直接の利用はなし)
     * https://gluonhq.com/products/scene-builder/
+
+## TODO
+* チェックボックスの実装
+* 追加画面及び追加処理
+* 削除処理
+* 社員番号による、更新画面の表示
+* 更新処理
