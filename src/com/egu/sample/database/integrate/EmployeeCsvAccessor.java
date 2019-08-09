@@ -80,13 +80,10 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	public synchronized void insert(@NonNull Employee target) {
 		// 社員番号の検索
 		Objects.requireNonNull(this.employees);
-		Optional<Employee> empOpt = this.employees.stream()
-				.filter(emp -> emp.getNo().equals(target.getNo()))
-				.findFirst();
+		Optional<Employee> empOpt = findByNo(target);
 		empOpt.ifPresent(emp -> {
 			throw new IllegalArgumentException(target + " already exist.");
 		});
-
 		// 追加&保存
 		this.employees.add(target);
 		save();
@@ -96,13 +93,23 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	public synchronized void delete(@NonNull Employee target) {
 		// 社員番号検索
 		Objects.requireNonNull(this.employees);
-		Optional<Employee> empOpt = this.employees.stream()
-				.filter(emp -> emp.getNo().equals(target.getNo()))
-				.findFirst();
-
+		Optional<Employee> empOpt = findByNo(target);
 		// 削除&保存
 		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
 		this.employees.remove(emp);
+		save();
+	}
+
+
+	@Override
+	public void update(Employee target) {
+		// 社員番号検索
+		Objects.requireNonNull(this.employees);
+		Optional<Employee> empOpt = findByNo(target);
+		// 削除&追加&保存
+		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
+		this.employees.remove(emp);
+		this.employees.add(target);
 		save();
 	}
 
@@ -137,6 +144,18 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 				.filter(predicate)
 				.collect(Collectors.toList());
 		return result;
+	}
+
+	/**
+	 * 社員番号から検索します。
+	 * @param target
+	 * @return
+	 */
+	private Optional<Employee> findByNo(Employee target) {
+		Optional<Employee> ret = this.employees.stream()
+				.filter(emp -> emp.getNo().equals(target.getNo()))
+				.findFirst();
+		return ret;
 	}
 
 	/**
