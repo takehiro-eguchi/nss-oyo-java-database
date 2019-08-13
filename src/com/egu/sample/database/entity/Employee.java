@@ -18,6 +18,7 @@ import lombok.experimental.Accessors;
 @CsvEntity(header = true)
 public class Employee {
 
+
 	/** 社員番号 */
 	@CsvColumn(position = 0)
 	private String no;
