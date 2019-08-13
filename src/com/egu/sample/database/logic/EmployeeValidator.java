@@ -32,11 +32,6 @@ final class EmployeeValidator {
 			return ExecutionResult.INVALID_KANA;
 		}
 
-		// ID
-		if (isEmpty(employee.id())) {
-			return ExecutionResult.INVALID_ID;
-		}
-
 		return ExecutionResult.SUCCESS;
 	}
 
