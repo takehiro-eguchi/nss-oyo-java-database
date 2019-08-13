@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -30,9 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class EmployeeCsvAccessor implements EmployeeAccessor {
 
-	/** デフォルトファイルパス */
-	private static final String DEFAULT_FILENAME = "employee-list.csv";
-
 	/** デフォルトエンコーディング */
 	private static final String DEFAULT_ENCODING = "Shift_JIS";
 
@@ -44,18 +40,6 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 
 	/** エンコーディング */
 	private final String encoding;
-
-	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
-	public EmployeeCsvAccessor() {
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-		URL url = classLoader.getResource(DEFAULT_FILENAME);
-		if (url == null) {
-			throw new IllegalStateException(DEFAULT_FILENAME + " is not found.");
-		}
-		this.filename = url.getPath();
-		this.encoding = DEFAULT_ENCODING;
-		load();
-	}
 
 	/**
 	 * ファイル名を渡すことによりインスタンスを生成します。
