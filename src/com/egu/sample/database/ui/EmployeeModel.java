@@ -2,8 +2,6 @@ package com.egu.sample.database.ui;
 
 import com.egu.sample.database.entity.Employee;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.ToString;
@@ -15,9 +13,6 @@ import lombok.ToString;
  */
 @ToString
 public class EmployeeModel {
-
-	/** チェック */
-	private final BooleanProperty checkProperty = new SimpleBooleanProperty(false);
 
 	/** 社員番号 */
 	private final StringProperty noProperty;
@@ -37,10 +32,21 @@ public class EmployeeModel {
 	/** メールアドレス */
 	private final StringProperty emailProperty;
 
-	/** チェックプロパティ */
-	public static final String CHECK_PROPNAME = "check";
-	public BooleanProperty checkProperty() {
-		return checkProperty;
+	/** 社員 */
+	private final Employee emp;
+
+	/**
+	 * 社員オブジェクトを渡すことにより、インスタンスを生成します。
+	 * @param emp
+	 */
+	public EmployeeModel(Employee emp) {
+		this.emp = emp;
+		this.noProperty = new SimpleStringProperty(emp.no());
+		this.nameProperty = new SimpleStringProperty(emp.name());
+		this.kanaProperty = new SimpleStringProperty(emp.kana());
+		this.idProperty = new SimpleStringProperty(emp.id());
+		this.belongProperty = new SimpleStringProperty(emp.belong());
+		this.emailProperty = new SimpleStringProperty(emp.email());
 	}
 
 	/** 社員番号プロパティ */
@@ -81,15 +87,10 @@ public class EmployeeModel {
 	}
 
 	/**
-	 * 社員オブジェクトを渡すことにより、インスタンスを生成します。
-	 * @param emp
+	 * 実体を取得します。
+	 * @return
 	 */
-	public EmployeeModel(Employee emp) {
-		this.noProperty = new SimpleStringProperty(emp.no());
-		this.nameProperty = new SimpleStringProperty(emp.name());
-		this.kanaProperty = new SimpleStringProperty(emp.kana());
-		this.idProperty = new SimpleStringProperty(emp.id());
-		this.belongProperty = new SimpleStringProperty(emp.belong());
-		this.emailProperty = new SimpleStringProperty(emp.email());
+	public Employee getEntity() {
+		return this.emp;
 	}
 }

@@ -1,6 +1,7 @@
 package com.egu.sample.database.ui;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,8 +9,9 @@ import com.egu.sample.database.entity.Employee;
 import com.egu.sample.database.logic.EmployeeStore;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -17,14 +19,14 @@ import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 社員フレームのコントローラオブジェクトです。
  * @author t-eguchi
  *
  */
+@Slf4j
 public class EmployeeFrameController {
 
 	/** 追加ボタン */
@@ -46,10 +48,6 @@ public class EmployeeFrameController {
 	/** テーブル */
 	@FXML
 	private TableView<EmployeeModel> employeeView;
-
-	/** チェックカラム */
-	@FXML
-	private TableColumn<EmployeeModel, Boolean> checkColumn;
 
 	/** 社員番号カラム */
 	@FXML
@@ -78,9 +76,7 @@ public class EmployeeFrameController {
 	/** 社員ストア */
 	private final EmployeeStore store;
 
-	/**
-	 * デフォルトコンストラクタにより、インスタンスを生成します。
-	 */
+	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
 	public EmployeeFrameController() {
 		this.store = EmployeeStore.getInstance();
 	}
@@ -105,12 +101,8 @@ public class EmployeeFrameController {
 
 	/** 削除ボタンの初期化を行います */
 	private void initializeDeleteButton() {
-		// TODO 自動生成されたメソッド・スタブ
 		this.deleteButton.setOnAction(e -> {
-			TableViewSelectionModel<EmployeeModel> selectionModel = this.employeeView.getSelectionModel();
-			EmployeeModel model = selectionModel.getSelectedItem();
-			System.err.println(model);
-			System.err.println("削除ボタンが押下されました。");
+			deleteEmployee();
 		});
 	}
 
@@ -127,21 +119,13 @@ public class EmployeeFrameController {
 	/** リフレッシュボタンの初期化を行います */
 	private void initializeRefreshButton() {
 		this.refreshButton.setOnAction(e -> {
-			String text = this.searchText.getText();
-			List<Employee> employees;
-			if (StringUtils.isEmpty(text)) {	// 検索テキストが空なら、全検索
-				employees = this.store.list();
-			} else {	// 検索テキストに入力があれば、検索
-				employees = this.store.findByText(text);
-			}
-			redrawView(employees);
+			refreshEmployee();
 		});
 	}
 
 	/** 社員ビューの初期化を行います */
 	@SuppressWarnings("unchecked")
 	private void initializeEmployeeView() {
-		// TODO 自動生成されたメソッド・スタブ
 		// カラムの設定
 		setCellValueFactory(this.noColumn, EmployeeModel.NO_PROPNAME);
 		setCellValueFactory(this.nameColumn, EmployeeModel.NAME_PROPNAME);
@@ -150,28 +134,26 @@ public class EmployeeFrameController {
 		setCellValueFactory(this.belongColumn, EmployeeModel.BELONG_PROPNAME);
 		setCellValueFactory(this.emailColumn, EmployeeModel.EMAIL_PROPNAME);
 		this.employeeView.getColumns().setAll(
-				this.checkColumn,
 				this.noColumn, this.nameColumn, this.kanaColumn,
 				this.idColumn, this.belongColumn, this.emailColumn);
-
-		this.employeeView.setOnKeyPressed(e -> {
-			KeyCode keyCode = e.getCode();
-			System.err.println("キーコード = " + keyCode);
-			EventType<KeyEvent> eventType = e.getEventType();
-			System.err.println("タイプ = " + eventType);
-		});
-
-		this.employeeView.setOnMouseClicked(e -> {
-			int clickCount = e.getClickCount();
-			System.err.println("クリック回数 = " + clickCount);
-			EventType<? extends MouseEvent> eventType = e.getEventType();
-			System.err.println("タイプ = " + eventType);
-		});
-
 
 		// 社員の取得および描画
 		List<Employee> employees = this.store.list();
 		redrawView(employees);
+
+		// エンターとダブルクリックは更新画面を開く
+		this.employeeView.setOnKeyPressed(e -> {
+			KeyCode keyCode = e.getCode();
+			if (keyCode == KeyCode.ENTER) {
+				updateEmployee();
+			}
+		});
+		this.employeeView.setOnMouseClicked(e -> {
+			int clickCount = e.getClickCount();
+			if (clickCount > 1) {
+				updateEmployee();
+			}
+		});
 	}
 
 	/**
@@ -190,5 +172,55 @@ public class EmployeeFrameController {
 	private <M, V> void setCellValueFactory(TableColumn<M, V> column, String name) {
 		PropertyValueFactory<M, V> factory = new PropertyValueFactory<>(name);
 		column.setCellValueFactory(factory);
+	}
+
+	/** 社員の更新を行います */
+	private void updateEmployee() {
+		// TODO  自動生成されたメソッド・スタブ
+	}
+
+	/** 社員の削除を行います */
+	private void deleteEmployee() {
+		// 選択中の社員を取得
+		Optional<Employee> opt = getSelectEmployee();
+		opt.ifPresent(emp -> {
+			try {
+				this.store.delete(emp);
+				showDialog(AlertType.INFORMATION, "社員番号 " + emp.no() + " を削除しました。");
+				refreshEmployee();
+			} catch (Exception e) {
+				log.error("Failed to delete emp.", e);
+				showDialog(AlertType.ERROR, "社員番号 " + emp.no() + " を削除できませんでした。");
+			}
+		});
+	}
+
+	/** 社員を最新化します */
+	private void refreshEmployee() {
+		// 検索後、再描画
+		String text = this.searchText.getText();
+		List<Employee> employees;
+		if (StringUtils.isEmpty(text)) {	// 検索テキストが空なら、全検索
+			employees = this.store.list();
+		} else {	// 検索テキストに入力があれば、検索
+			employees = this.store.findByText(text);
+		}
+		redrawView(employees);
+	}
+
+	/** 選択中の社員を取得します */
+	private Optional<Employee> getSelectEmployee() {
+		TableViewSelectionModel<EmployeeModel> selectionModel = this.employeeView.getSelectionModel();
+		EmployeeModel model = selectionModel.getSelectedItem();
+		Employee employee = model != null ? model.getEntity() : null;
+		return Optional.of(employee);
+	}
+
+	/** ダイアログを表示します */
+	private void showDialog(AlertType type, String message) {
+		Alert dialog = new Alert(type);
+		dialog.setHeaderText(null);
+		dialog.setContentText(message);
+		dialog.showAndWait();
 	}
 }
