@@ -2,15 +2,22 @@ package com.egu.sample.database.ui;
 
 import com.egu.sample.database.entity.Employee;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.ToString;
 
 /**
  * 表示用社員モデルオブジェクトです。
  * @author t-eguchi
  *
  */
+@ToString
 public class EmployeeModel {
+
+	/** チェック */
+	private final BooleanProperty checkProperty = new SimpleBooleanProperty(false);
 
 	/** 社員番号 */
 	private final StringProperty noProperty;
@@ -29,6 +36,12 @@ public class EmployeeModel {
 
 	/** メールアドレス */
 	private final StringProperty emailProperty;
+
+	/** チェックプロパティ */
+	public static final String CHECK_PROPNAME = "check";
+	public BooleanProperty checkProperty() {
+		return checkProperty;
+	}
 
 	/** 社員番号プロパティ */
 	public static final String NO_PROPNAME = "no";

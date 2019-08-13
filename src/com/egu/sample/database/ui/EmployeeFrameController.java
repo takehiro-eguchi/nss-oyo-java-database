@@ -8,12 +8,17 @@ import com.egu.sample.database.entity.Employee;
 import com.egu.sample.database.logic.EmployeeStore;
 
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 /**
  * 社員フレームのコントローラオブジェクトです。
@@ -41,6 +46,10 @@ public class EmployeeFrameController {
 	/** テーブル */
 	@FXML
 	private TableView<EmployeeModel> employeeView;
+
+	/** チェックカラム */
+	@FXML
+	private TableColumn<EmployeeModel, Boolean> checkColumn;
 
 	/** 社員番号カラム */
 	@FXML
@@ -98,6 +107,9 @@ public class EmployeeFrameController {
 	private void initializeDeleteButton() {
 		// TODO 自動生成されたメソッド・スタブ
 		this.deleteButton.setOnAction(e -> {
+			TableViewSelectionModel<EmployeeModel> selectionModel = this.employeeView.getSelectionModel();
+			EmployeeModel model = selectionModel.getSelectedItem();
+			System.err.println(model);
 			System.err.println("削除ボタンが押下されました。");
 		});
 	}
@@ -138,8 +150,24 @@ public class EmployeeFrameController {
 		setCellValueFactory(this.belongColumn, EmployeeModel.BELONG_PROPNAME);
 		setCellValueFactory(this.emailColumn, EmployeeModel.EMAIL_PROPNAME);
 		this.employeeView.getColumns().setAll(
+				this.checkColumn,
 				this.noColumn, this.nameColumn, this.kanaColumn,
 				this.idColumn, this.belongColumn, this.emailColumn);
+
+		this.employeeView.setOnKeyPressed(e -> {
+			KeyCode keyCode = e.getCode();
+			System.err.println("キーコード = " + keyCode);
+			EventType<KeyEvent> eventType = e.getEventType();
+			System.err.println("タイプ = " + eventType);
+		});
+
+		this.employeeView.setOnMouseClicked(e -> {
+			int clickCount = e.getClickCount();
+			System.err.println("クリック回数 = " + clickCount);
+			EventType<? extends MouseEvent> eventType = e.getEventType();
+			System.err.println("タイプ = " + eventType);
+		});
+
 
 		// 社員の取得および描画
 		List<Employee> employees = this.store.list();
