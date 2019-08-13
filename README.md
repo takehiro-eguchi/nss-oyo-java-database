@@ -24,10 +24,3 @@
     * https://gluonhq.com/products/scene-builder/
     * 文字化けするので、** \\seiryu\shinjin-kenshu41\20.Java言語\データベース課題\SceneBuilder.cfg ** をインストールディレクトリの ** app ** に配置すること。
 
-## TODO
-* チェックボックスの実装
-* 追加画面及び追加処理
-* 削除処理
-* 社員番号による、更新画面の表示
-* 更新処理
-* データソース設定の柔軟化(VMオプション?)
