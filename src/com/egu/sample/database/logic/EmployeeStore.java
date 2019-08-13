@@ -41,12 +41,4 @@ public interface EmployeeStore {
 	 * @return
 	 */
 	List<Employee> findByText(String text);
-
-	/**
-	 * 社員ストアの実装を取得します。
-	 * @return
-	 */
-	public static EmployeeStore getInstance() {
-		return new EmployeeStoreImpl();
-	}
 }
