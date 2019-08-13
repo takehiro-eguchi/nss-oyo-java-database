@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class EmployeeFrameController {
+public class EmployeeListController {
 
 	/** 追加ボタン */
 	@FXML
@@ -77,7 +77,7 @@ public class EmployeeFrameController {
 	private final EmployeeStore store;
 
 	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
-	public EmployeeFrameController() {
+	public EmployeeListController() {
 		this.store = EmployeeStore.getInstance();
 	}
 
