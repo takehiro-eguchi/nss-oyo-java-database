@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.egu.sample.database.entity.Employee;
 import com.egu.sample.database.integrate.EmployeeAccessor;
+import com.egu.sample.database.integrate.EmployeeAccessorFactory;
 
 import lombok.NonNull;
 
@@ -21,7 +22,7 @@ class EmployeeStoreImpl implements EmployeeStore {
 	 * デフォルトコンストラクタにより、インスタンスを生成します。
 	 */
 	public EmployeeStoreImpl() {
-		this(EmployeeAccessor.getInstance());
+		this(EmployeeAccessorFactory.getInstance());
 	}
 
 	/**

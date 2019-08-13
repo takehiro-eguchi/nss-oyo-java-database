@@ -20,12 +20,14 @@ import com.orangesignal.csv.manager.CsvEntityManager;
 import com.orangesignal.csv.manager.CsvEntitySaver;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * CSVファイルを用いて、社員にアクセスする実装オブジェクトです。
  * @author t-eguchi
  *
  */
+@Slf4j
 class EmployeeCsvAccessor implements EmployeeAccessor {
 
 	/** デフォルトファイルパス */
@@ -43,9 +45,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	/** エンコーディング */
 	private final String encoding;
 
-	/**
-	 * デフォルトコンストラクタにより、インスタンスを生成します。
-	 */
+	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
 	public EmployeeCsvAccessor() {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		URL url = classLoader.getResource(DEFAULT_FILENAME);
@@ -86,6 +86,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		});
 		// 追加&保存
 		this.employees.add(target);
+		log.debug("insert record = {}, count = {}", target, this.employees.size());
 		save();
 	}
 
@@ -97,6 +98,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		// 削除&保存
 		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
 		this.employees.remove(emp);
+		log.debug("delete record = {}, count = {}", emp, this.employees.size());
 		save();
 	}
 
@@ -110,6 +112,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
 		this.employees.remove(emp);
 		this.employees.add(target);
+		log.debug("update record = {}, count = {}", target, this.employees.size());
 		save();
 	}
 
@@ -121,6 +124,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 			Employee copy = new Employee(employee);
 			copies.add(copy);
 		});
+		log.debug("all count = {}", copies.size());
 		return copies;
 	}
 
@@ -143,6 +147,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		List<Employee> result = allEmployees.stream()
 				.filter(predicate)
 				.collect(Collectors.toList());
+		log.debug("select count = {}", result.size());
 		return result;
 	}
 
@@ -192,6 +197,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		// 書き込み
 		try (OutputStream outputStream = new FileOutputStream(this.filename)) {
 			saver.to(outputStream, this.encoding);
+			log.debug("save count = {}", employees.size());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -40,12 +40,4 @@ public interface EmployeeAccessor {
 	 * @return
 	 */
 	List<Employee> select(String text);
-
-	/**
-	 * 社員アクセスオブジェクトのインスタンスを取得します。
-	 * @return
-	 */
-	public static EmployeeAccessor getInstance() {
-		return new EmployeeCsvAccessor();
-	}
 }

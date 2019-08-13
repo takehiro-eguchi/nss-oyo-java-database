@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import lombok.NonNull;
 
 /**
@@ -73,5 +75,33 @@ public final class FXMLUtil {
 		URL location = getLocation(
 				controller.getClass(), resourceName);
 		return loadPane(location, controller);
+	}
+
+	/**
+	 * ダイアログを表示します
+	 * @param type
+	 * @param message
+	 */
+	public static void showDialog(AlertType type, String message) {
+		Alert dialog = new Alert(type);
+		dialog.setHeaderText(null);
+		dialog.setContentText(message);
+		dialog.showAndWait();
+	}
+
+	/**
+	 * 情報ダイアログを表示します。
+	 * @param message
+	 */
+	public static void showInfo(String message) {
+		showDialog(AlertType.INFORMATION, message);
+	}
+
+	/**
+	 * エラーダイアログを表示します
+	 * @param message
+	 */
+	public static void showError(String message) {
+		showDialog(AlertType.ERROR, message);
 	}
 }

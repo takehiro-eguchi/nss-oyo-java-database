@@ -1,5 +1,7 @@
 package com.egu.sample.database.ui;
 
+import static com.egu.sample.database.ui.util.FXMLUtil.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,11 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.egu.sample.database.entity.Employee;
 import com.egu.sample.database.logic.EmployeeStore;
+import com.egu.sample.database.logic.EmployeeStoreFactory;
+import com.egu.sample.database.ui.edit.EmployeeEditStage;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -19,6 +21,7 @@ import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Modality;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -78,7 +81,7 @@ public class EmployeeListController {
 
 	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
 	public EmployeeListController() {
-		this.store = EmployeeStore.getInstance();
+		this.store = EmployeeStoreFactory.getInstance();
 	}
 
 	/** 初期化処理を行います */
@@ -93,17 +96,14 @@ public class EmployeeListController {
 
 	/** 追加ボタンの初期化を行います */
 	private void initializeCreateButton() {
-		// TODO 自動生成されたメソッド・スタブ
-		this.createButton.setOnAction(e -> {
-			System.err.println("追加ボタンが押下されました。");
-		});
+		this.createButton.setOnAction(e -> createEmployee());
 	}
+
+
 
 	/** 削除ボタンの初期化を行います */
 	private void initializeDeleteButton() {
-		this.deleteButton.setOnAction(e -> {
-			deleteEmployee();
-		});
+		this.deleteButton.setOnAction(e -> deleteEmployee());
 	}
 
 	/** 検索テキストの初期化を行います */
@@ -118,9 +118,7 @@ public class EmployeeListController {
 
 	/** リフレッシュボタンの初期化を行います */
 	private void initializeRefreshButton() {
-		this.refreshButton.setOnAction(e -> {
-			refreshEmployee();
-		});
+		this.refreshButton.setOnAction(e -> refreshEmployee());
 	}
 
 	/** 社員ビューの初期化を行います */
@@ -174,9 +172,28 @@ public class EmployeeListController {
 		column.setCellValueFactory(factory);
 	}
 
+	/** 社員の作成を行います */
+	private void createEmployee() {
+		showEditStage(null);
+	}
+
 	/** 社員の更新を行います */
 	private void updateEmployee() {
-		// TODO  自動生成されたメソッド・スタブ
+		Optional<Employee> opt = getSelectEmployee();
+		opt.ifPresent(emp -> {
+			showEditStage(emp);
+		});
+	}
+
+	/**
+	 * 編集画面を表示します。
+	 * @param emp
+	 */
+	private void showEditStage(Employee emp) {
+		EmployeeEditStage editStage = new EmployeeEditStage(emp);
+		editStage.initModality(Modality.APPLICATION_MODAL);
+		editStage.showAndWait();
+		refreshEmployee();
 	}
 
 	/** 社員の削除を行います */
@@ -186,11 +203,11 @@ public class EmployeeListController {
 		opt.ifPresent(emp -> {
 			try {
 				this.store.delete(emp);
-				showDialog(AlertType.INFORMATION, "社員番号 " + emp.no() + " を削除しました。");
+				showInfo("社員番号 " + emp.no() + " を削除しました。");
 				refreshEmployee();
 			} catch (Exception e) {
 				log.error("Failed to delete emp.", e);
-				showDialog(AlertType.ERROR, "社員番号 " + emp.no() + " を削除できませんでした。");
+				showError("社員番号 " + emp.no() + " を削除できませんでした。");
 			}
 		});
 	}
@@ -214,13 +231,5 @@ public class EmployeeListController {
 		EmployeeModel model = selectionModel.getSelectedItem();
 		Employee employee = model != null ? model.getEntity() : null;
 		return Optional.of(employee);
-	}
-
-	/** ダイアログを表示します */
-	private void showDialog(AlertType type, String message) {
-		Alert dialog = new Alert(type);
-		dialog.setHeaderText(null);
-		dialog.setContentText(message);
-		dialog.showAndWait();
 	}
 }
