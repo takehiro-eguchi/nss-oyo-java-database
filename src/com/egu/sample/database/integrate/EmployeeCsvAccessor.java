@@ -88,16 +88,22 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 
 
 	@Override
-	public void update(Employee target) {
+	public synchronized void update(Employee target) {
 		// 社員番号検索
 		Objects.requireNonNull(this.employees);
-		Optional<Employee> empOpt = findByNo(target);
-		// 削除&追加&保存
-		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
-		this.employees.remove(emp);
-		this.employees.add(target);
-		log.debug("update record = {}, count = {}", target, this.employees.size());
-		save();
+		for (int i = 0; i < employees.size(); i++) {
+			Employee emp = employees.get(i);
+			if (emp.no().equals(target.no())) {
+				// 置換および保存
+				employees.set(i, target);
+				log.debug("update record = {}, count = {}", target, this.employees.size());
+				save();
+				return;
+			}
+		}
+
+		// 存在しない場合は例外
+		throw new IllegalArgumentException(target + " is not found.");
 	}
 
 	@Override
