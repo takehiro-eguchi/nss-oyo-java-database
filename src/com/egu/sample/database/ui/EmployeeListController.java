@@ -230,6 +230,6 @@ public class EmployeeListController {
 		TableViewSelectionModel<EmployeeModel> selectionModel = this.employeeView.getSelectionModel();
 		EmployeeModel model = selectionModel.getSelectedItem();
 		Employee employee = model != null ? model.getEntity() : null;
-		return Optional.of(employee);
+		return Optional.ofNullable(employee);
 	}
 }
