@@ -91,6 +91,6 @@ public class EmployeeModel {
 	 * @return
 	 */
 	public Employee getEntity() {
-		return this.emp;
+		return emp;
 	}
 }

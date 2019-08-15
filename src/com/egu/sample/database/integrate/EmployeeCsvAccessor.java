@@ -63,26 +63,26 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	@Override
 	public synchronized void insert(@NonNull Employee target) {
 		// 社員番号の検索
-		Objects.requireNonNull(this.employees);
+		Objects.requireNonNull(employees);
 		Optional<Employee> empOpt = findByNo(target);
 		empOpt.ifPresent(emp -> {
 			throw new IllegalArgumentException(target + " already exist.");
 		});
 		// 追加&保存
-		this.employees.add(target);
-		log.debug("insert record = {}, count = {}", target, this.employees.size());
+		employees.add(target);
+		log.debug("insert record = {}, count = {}", target, employees.size());
 		save();
 	}
 
 	@Override
 	public synchronized void delete(@NonNull Employee target) {
 		// 社員番号検索
-		Objects.requireNonNull(this.employees);
+		Objects.requireNonNull(employees);
 		Optional<Employee> empOpt = findByNo(target);
 		// 削除&保存
 		Employee emp = empOpt.orElseThrow(() -> new IllegalArgumentException(target + " is not found."));
-		this.employees.remove(emp);
-		log.debug("delete record = {}, count = {}", emp, this.employees.size());
+		employees.remove(emp);
+		log.debug("delete record = {}, count = {}", emp, employees.size());
 		save();
 	}
 
@@ -90,13 +90,13 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	@Override
 	public synchronized void update(Employee target) {
 		// 社員番号検索
-		Objects.requireNonNull(this.employees);
+		Objects.requireNonNull(employees);
 		for (int i = 0; i < employees.size(); i++) {
 			Employee emp = employees.get(i);
 			if (emp.no().equals(target.no())) {
 				// 置換および保存
 				employees.set(i, target);
-				log.debug("update record = {}, count = {}", target, this.employees.size());
+				log.debug("update record = {}, count = {}", target, employees.size());
 				save();
 				return;
 			}
@@ -108,9 +108,9 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 
 	@Override
 	public synchronized List<Employee> all() {
-		Objects.requireNonNull(this.employees);
+		Objects.requireNonNull(employees);
 		List<Employee> copies = new LinkedList<>();
-		this.employees.forEach(employee -> {
+		employees.forEach(employee -> {
 			Employee copy = new Employee(employee);
 			copies.add(copy);
 		});
@@ -147,7 +147,7 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 	 * @return
 	 */
 	private Optional<Employee> findByNo(Employee target) {
-		Optional<Employee> ret = this.employees.stream()
+		Optional<Employee> ret = employees.stream()
 				.filter(emp -> emp.no().equals(target.no()))
 				.findFirst();
 		return ret;
@@ -166,8 +166,8 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		CsvEntityLoader<Employee> loader = manager.load(Employee.class);
 
 		// 読込
-		try (InputStream inputStream = new FileInputStream(this.filename)) {
-			this.employees = loader.from(inputStream, this.encoding);
+		try (InputStream inputStream = new FileInputStream(filename)) {
+			employees = loader.from(inputStream, encoding);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -182,11 +182,11 @@ class EmployeeCsvAccessor implements EmployeeAccessor {
 		config.setQuote('"');
 		config.setQuoteDisabled(false);
 		CsvEntityManager manager = new CsvEntityManager(config);
-		CsvEntitySaver<Employee> saver = manager.save(this.employees, Employee.class);
+		CsvEntitySaver<Employee> saver = manager.save(employees, Employee.class);
 
 		// 書き込み
-		try (OutputStream outputStream = new FileOutputStream(this.filename)) {
-			saver.to(outputStream, this.encoding);
+		try (OutputStream outputStream = new FileOutputStream(filename)) {
+			saver.to(outputStream, encoding);
 			log.debug("save count = {}", employees.size());
 		} catch (IOException e) {
 			throw new RuntimeException(e);

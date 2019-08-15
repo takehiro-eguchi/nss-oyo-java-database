@@ -55,7 +55,7 @@ public class EmployeeEditController {
 	private final Employee emp;
 
 	/** 社員ストア */
-	private final EmployeeStore store;
+	private final EmployeeStore store = EmployeeStoreFactory.getInstance();
 
 	/** 登録成功処理 */
 	private Runnable onRegisterSuccessRunner;
@@ -74,12 +74,11 @@ public class EmployeeEditController {
 	public EmployeeEditController(Employee emp) {
 		if (emp != null) {	// 更新
 			this.emp = new Employee(emp);
-			this.isNew = false;
+			isNew = false;
 		} else {	// 新規作成
 			this.emp = new Employee();
-			this.isNew = true;
+			isNew = true;
 		}
-		this.store = EmployeeStoreFactory.getInstance();
 	}
 
 	/** 初期化処理を行います */
@@ -154,6 +153,6 @@ public class EmployeeEditController {
 	 * @param runner
 	 */
 	public void setOnRegisterSuccess(Runnable runner) {
-		this.onRegisterSuccessRunner = runner;
+		onRegisterSuccessRunner = runner;
 	}
 }
