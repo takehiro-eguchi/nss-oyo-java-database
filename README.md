@@ -27,12 +27,12 @@ com.egu.sample.database         := ルートパッケージ。当該アプリケ
 * Lombok
     * **lib** 以下の **lombok.jar** をダブルクリック後、**eclipse.exe** を選択して、インストールする。
 * e(fx)clipse
-    * 「ヘルプ」→「Eclipseマーケットプレース」より、** e(fx)clipse ** を検索して、インストールする。
+    * 「ヘルプ」→「Eclipseマーケットプレース」より、**e(fx)clipse** を検索して、インストールする。
 
 ## 利用するミドルウェア
 * PostgreSQL
     * https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-    * 本番運用ではないので、スーパーユーザのパスワードは ** password ** でよい。
+    * 本番運用ではないので、スーパーユーザのパスワードは **password** でよい。
 * Scene Builder(直接の利用はなし)
     * https://gluonhq.com/products/scene-builder/
-    * 文字化けするので、** \\seiryu\shinjin-kenshu41\20.Java言語\データベース課題\SceneBuilder.cfg ** をインストールディレクトリの ** app ** に配置すること。
+    * 文字化けするので、**\\seiryu\shinjin-kenshu41\20.Java言語\データベース課題\SceneBuilder.cfg** をインストールディレクトリの **app** に配置すること。
