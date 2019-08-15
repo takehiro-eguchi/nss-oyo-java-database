@@ -77,12 +77,7 @@ public class EmployeeListController {
 	private TableColumn<EmployeeModel, String> emailColumn;
 
 	/** 社員ストア */
-	private final EmployeeStore store;
-
-	/** デフォルトコンストラクタにより、インスタンスを生成します。 */
-	public EmployeeListController() {
-		this.store = EmployeeStoreFactory.getInstance();
-	}
+	private final EmployeeStore store = EmployeeStoreFactory.getInstance();
 
 	/** 初期化処理を行います */
 	@FXML
@@ -96,57 +91,56 @@ public class EmployeeListController {
 
 	/** 追加ボタンの初期化を行います */
 	private void initializeCreateButton() {
-		this.createButton.setOnAction(e -> createEmployee());
+		createButton.setOnAction(e -> createEmployee());
 	}
 
 
 
 	/** 削除ボタンの初期化を行います */
 	private void initializeDeleteButton() {
-		this.deleteButton.setOnAction(e -> deleteEmployee());
+		deleteButton.setOnAction(e -> deleteEmployee());
 	}
 
 	/** 検索テキストの初期化を行います */
 	private void initializeSearchText() {
-		this.searchText.setOnAction(e -> {
+		searchText.setOnAction(e -> {
 			// 検索および再描画
-			String text = this.searchText.getText();
-			List<Employee> employees = this.store.findByText(text);
+			String text = searchText.getText();
+			List<Employee> employees = store.findByText(text);
 			redrawView(employees);
 		});
 	}
 
 	/** リフレッシュボタンの初期化を行います */
 	private void initializeRefreshButton() {
-		this.refreshButton.setOnAction(e -> refreshEmployee());
+		refreshButton.setOnAction(e -> refreshEmployee());
 	}
 
 	/** 社員ビューの初期化を行います */
 	@SuppressWarnings("unchecked")
 	private void initializeEmployeeView() {
 		// カラムの設定
-		setCellValueFactory(this.noColumn, EmployeeModel.NO_PROPNAME);
-		setCellValueFactory(this.nameColumn, EmployeeModel.NAME_PROPNAME);
-		setCellValueFactory(this.kanaColumn, EmployeeModel.KANA_PROPNAME);
-		setCellValueFactory(this.idColumn, EmployeeModel.ID_PROPNAME);
-		setCellValueFactory(this.belongColumn, EmployeeModel.BELONG_PROPNAME);
-		setCellValueFactory(this.emailColumn, EmployeeModel.EMAIL_PROPNAME);
-		this.employeeView.getColumns().setAll(
-				this.noColumn, this.nameColumn, this.kanaColumn,
-				this.idColumn, this.belongColumn, this.emailColumn);
+		setCellValueFactory(noColumn, EmployeeModel.NO_PROPNAME);
+		setCellValueFactory(nameColumn, EmployeeModel.NAME_PROPNAME);
+		setCellValueFactory(kanaColumn, EmployeeModel.KANA_PROPNAME);
+		setCellValueFactory(idColumn, EmployeeModel.ID_PROPNAME);
+		setCellValueFactory(belongColumn, EmployeeModel.BELONG_PROPNAME);
+		setCellValueFactory(emailColumn, EmployeeModel.EMAIL_PROPNAME);
+		employeeView.getColumns().setAll(
+				noColumn, nameColumn, kanaColumn, idColumn, belongColumn, emailColumn);
 
 		// 社員の取得および描画
-		List<Employee> employees = this.store.list();
+		List<Employee> employees = store.list();
 		redrawView(employees);
 
 		// エンターとダブルクリックは更新画面を開く
-		this.employeeView.setOnKeyPressed(e -> {
+		employeeView.setOnKeyPressed(e -> {
 			KeyCode keyCode = e.getCode();
 			if (keyCode == KeyCode.ENTER) {
 				updateEmployee();
 			}
 		});
-		this.employeeView.setOnMouseClicked(e -> {
+		employeeView.setOnMouseClicked(e -> {
 			int clickCount = e.getClickCount();
 			if (clickCount > 1) {
 				updateEmployee();
@@ -159,10 +153,11 @@ public class EmployeeListController {
 	 * @param employees
 	 */
 	private void redrawView(List<Employee> employees) {
-		ObservableList<EmployeeModel> models = this.employeeView.getItems();
+		ObservableList<EmployeeModel> models = employeeView.getItems();
 		models.clear();
 		employees.forEach(emp -> {
-			models.add(new EmployeeModel(emp));
+			EmployeeModel model = new EmployeeModel(emp);
+			models.add(model);
 		});
 	}
 
@@ -180,9 +175,7 @@ public class EmployeeListController {
 	/** 社員の更新を行います */
 	private void updateEmployee() {
 		Optional<Employee> opt = getSelectEmployee();
-		opt.ifPresent(emp -> {
-			showEditStage(emp);
-		});
+		opt.ifPresent(emp -> showEditStage(emp));
 	}
 
 	/**
@@ -202,7 +195,7 @@ public class EmployeeListController {
 		Optional<Employee> opt = getSelectEmployee();
 		opt.ifPresent(emp -> {
 			try {
-				this.store.delete(emp);
+				store.delete(emp);
 				showInfo("社員番号 " + emp.no() + " を削除しました。");
 				refreshEmployee();
 			} catch (Exception e) {
@@ -215,19 +208,19 @@ public class EmployeeListController {
 	/** 社員を最新化します */
 	private void refreshEmployee() {
 		// 検索後、再描画
-		String text = this.searchText.getText();
+		String text = searchText.getText();
 		List<Employee> employees;
 		if (StringUtils.isEmpty(text)) {	// 検索テキストが空なら、全検索
-			employees = this.store.list();
+			employees = store.list();
 		} else {	// 検索テキストに入力があれば、検索
-			employees = this.store.findByText(text);
+			employees = store.findByText(text);
 		}
 		redrawView(employees);
 	}
 
 	/** 選択中の社員を取得します */
 	private Optional<Employee> getSelectEmployee() {
-		TableViewSelectionModel<EmployeeModel> selectionModel = this.employeeView.getSelectionModel();
+		TableViewSelectionModel<EmployeeModel> selectionModel = employeeView.getSelectionModel();
 		EmployeeModel model = selectionModel.getSelectedItem();
 		Employee employee = model != null ? model.getEntity() : null;
 		return Optional.ofNullable(employee);

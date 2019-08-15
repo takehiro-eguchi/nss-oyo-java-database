@@ -18,9 +18,7 @@ class EmployeeStoreImpl implements EmployeeStore {
 	/** 社員アクセッサ */
 	private final EmployeeAccessor accessor;
 
-	/**
-	 * デフォルトコンストラクタにより、インスタンスを生成します。
-	 */
+	/** デフォルトコンストラクタにより、インスタンスを生成します */
 	public EmployeeStoreImpl() {
 		this(EmployeeAccessorFactory.getInstance());
 	}
@@ -43,7 +41,7 @@ class EmployeeStoreImpl implements EmployeeStore {
 
 		// 追加
 		try {
-			this.accessor.insert(employee);
+			accessor.insert(employee);
 			return ExecutionResult.SUCCESS;
 		} catch (IllegalArgumentException e) {
 			return ExecutionResult.ALREADY_EXISTS;
@@ -60,7 +58,7 @@ class EmployeeStoreImpl implements EmployeeStore {
 
 		// 更新
 		try {
-			this.accessor.update(employee);
+			accessor.update(employee);
 			return ExecutionResult.SUCCESS;
 		} catch (IllegalArgumentException e) {
 			return ExecutionResult.NOT_FOUND;
@@ -71,7 +69,7 @@ class EmployeeStoreImpl implements EmployeeStore {
 	public ExecutionResult delete(Employee employee) {
 		// 削除
 		try {
-			this.accessor.delete(employee);
+			accessor.delete(employee);
 			return ExecutionResult.SUCCESS;
 		} catch (IllegalArgumentException e) {
 			return ExecutionResult.NOT_FOUND;
@@ -80,11 +78,11 @@ class EmployeeStoreImpl implements EmployeeStore {
 
 	@Override
 	public List<Employee> list() {
-		return this.accessor.all();
+		return accessor.all();
 	}
 
 	@Override
 	public List<Employee> findByText(String text) {
-		return this.accessor.select(text);
+		return accessor.select(text);
 	}
 }
