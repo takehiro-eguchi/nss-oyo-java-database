@@ -15,11 +15,11 @@ public final class EmployeeAccessorFactory {
 	/** キー(URL) */
 	private static final String URL_KEY = "datasource.url";
 
-//	/** キー(ユーザー) */
-//	private static final String USER_KEY = "datasource.user";
-//
-//	/** キー(パスワード) */
-//	private static final String PASS_KEY = "datasource.pass";
+	/** キー(ユーザー) */
+	private static final String USER_KEY = "datasource.user";
+
+	/** キー(パスワード) */
+	private static final String PASS_KEY = "datasource.pass";
 
 	/** インスタンス */
 	private static EmployeeAccessor INSTANCE;
@@ -37,21 +37,32 @@ public final class EmployeeAccessorFactory {
 			return INSTANCE;
 		}
 
-		// ファイルパスの取得
-		// VMオプションが設定されているURLを優先的に利用
-		String filename = System.getProperty(URL_KEY);
-		if (filename == null) {
-			// VMオプションが設定されていない場合はクラスパスよりデフォルトファイルを利用
-			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-			URL url = classLoader.getResource(DEFAULT_FILENAME);
-			if (url == null) {
-				throw new IllegalStateException(DEFAULT_FILENAME + " is not found.");
+		try {
+			// ファイルパスの取得
+			// VMオプションが設定されているURLを優先的に利用
+			String datasourceUrl = System.getProperty(URL_KEY);
+			if (datasourceUrl == null) {
+				// VMオプションが設定されていない場合はクラスパスよりデフォルトファイルを利用
+				ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+				URL resourceUrl = classLoader.getResource(DEFAULT_FILENAME);
+				if (resourceUrl == null) {
+					throw new IllegalStateException(DEFAULT_FILENAME + " is not found.");
+				}
+				datasourceUrl = resourceUrl.getPath();
 			}
-			filename = url.getPath();
-		}
 
-		// インスタンスの生成
-		INSTANCE = new EmployeeCsvAccessor(filename);
-		return INSTANCE;
+			// アクセサの生成
+			if (datasourceUrl.startsWith("jdbc:")) {	// URLの最初が jdbc: で始まる場合はJDBCアクセサ
+				String user = System.getProperty(USER_KEY);
+				String password = System.getProperty(PASS_KEY);
+				INSTANCE = new EmployeeJDBCAccessor(datasourceUrl, user, password);
+			} else {	// それ以外はCSVアクセサ
+				INSTANCE = new EmployeeCsvAccessor(datasourceUrl);
+			}
+			return INSTANCE;
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
