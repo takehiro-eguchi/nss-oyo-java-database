@@ -33,7 +33,7 @@ public class EmployeeAccessorTest {
 	@BeforeEach
 	public void before() throws IOException, URISyntaxException {
 		// ソースファイルをコピー
-		URL srcURL = getClass().getResource("employee-list.csv");
+		URL srcURL = getClass().getResource("dummy-list.csv");
 		Path srcPath = Paths.get(srcURL.toURI());
 		String testDir = srcPath.getParent().toString();
 		this.testPath = Paths.get(testDir + "/EmployeeAccessorTest.csv");
