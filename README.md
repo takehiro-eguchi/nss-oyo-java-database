@@ -31,7 +31,7 @@ com.egu.sample.database         := ルートパッケージ。当該アプリケ
 * e(fx)clipse
     * 「ヘルプ」→「Eclipseマーケットプレース」より、**e(fx)clipse** を検索して、インストールする。
 
-## 利用するミドルウェア
+## 利用するミドルウェア及びツール
 * PostgreSQL
     * https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
     * 本番運用ではないので、スーパーユーザのパスワードは **password** でよい。
