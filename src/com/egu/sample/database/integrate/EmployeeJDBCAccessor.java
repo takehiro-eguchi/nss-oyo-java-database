@@ -195,7 +195,6 @@ class EmployeeJDBCAccessor implements EmployeeAccessor {
 			return allEmployees;
 		}
 
-		// TODO 自動生成されたメソッド・スタブ
 		try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BYTEXT)) {
 			// 埋め込み
 			for (int index = 1; index <= 6; index++) {
