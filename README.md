@@ -25,6 +25,10 @@ com.egu.sample.database         := ルートパッケージ。当該アプリケ
                     + integrate := アプリケーションにおけるインテグレーション層を提供|
 ~~~
 
+## 必要なJava
+JavaFXを利用しているため、JDK8を利用します。
+https://www.oracle.com/java/technologies/downloads/#java8-windows
+より取得し、`JREシステムライブラリ`に登録してください。
 
 ## 必要なプラグイン
 * Lombok
